@@ -13,8 +13,8 @@ export YELLOW="\033[1;33m"
 export PURPLE="\033[1;35m"
 export NOPE="\033[0m"
 
-export seclists_path="$HOME/wordlists/SecLists" # (without /)
-export chromium_bin_path='/usr/bin/brave-browser' # Change this
+export seclists_path="~/tools/wordlists/SecLists" # (without /)
+#export chromium_bin_path='/usr/bin/brave-browser' # Change this
 
 # ################### TOOLS #######################
 # - Sublist3r
@@ -254,7 +254,7 @@ cname_ns_txt_records() {
 # aquatone
 aquatonef() {
     log "aquatone ($1)"
-    cat $report_path/$1/urls.txt | aquatone -chrome-path $chromium_bin_path -out $report_path/$1/scans/Aquatone/ -threads 5 -silent
+    cat $report_path/$1/urls.txt | aquatone -chrome-path ~/tools/chromium-latest-linux/8*/chrome-linux/chrome -out $report_path/$1/scans/Aquatone/ -threads 5 -silent
 }
 
 # Report creator
