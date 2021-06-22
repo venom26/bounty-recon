@@ -180,7 +180,7 @@ gospiderf() {
 feroxbusterf() {
     log "Content Discovery ($2)"
     domain=$(echo $2 | unfurl domains)
-    feroxbuster -x php,asp,aspx,jsp,html,zip,jar -w $seclists_path/Discovery/Web-Content/common.txt -u "$2" --user-agent 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36' -d 1 -o $report_path/$1/scans/feroxbuster/$domain.txt &>/dev/null
+    feroxbuster -x php,asp,aspx,jsp,html,zip,jar -w ~/tools/dirsearch/db/dicc.txt -u "$2" --user-agent 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36' -d 1 -o $report_path/$1/scans/feroxbuster/$domain.txt &>/dev/null
     #[ -s $report_path/$1/scans/feroxbuster/$domain.txt ] && sed -i "/^Time/d;/^$/d" $report_path/$1/scans/feroxbuster/$domain.txt
 }
 
