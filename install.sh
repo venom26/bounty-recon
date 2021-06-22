@@ -19,6 +19,14 @@ make
 cd ~/tools/
 echo "done"
 
+echo "Installing Chromium-Browser"
+cd ~/tools/
+git clone https://github.com/scheib/chromium-latest-linux.git
+cd chromium-latest-linux
+./update-and-run.sh
+cd ~/tools
+echo "Done"
+
 git clone https://github.com/ebsa491/whichCDN.git
 cd whichCDN
 pip install -r requirements.txt
