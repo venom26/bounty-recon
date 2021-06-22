@@ -71,15 +71,15 @@ log() {
 # Sublist3r
 sublist3r() {
     log "Sublist3r ($1)"
-    $tools_path/Sublist3r/sublist3r.py -d $1 -t 5 -o $report_path/$1/subdomains.txt &>/dev/null
+    ~/tools/Sublist3r/sublist3r.py -d $1 -t 5 -o $report_path/$1/subdomains.txt &>/dev/null
 }
 
 # crt.sh
 crtsh() {
     log "crt.sh ($1)"
-    $tools_path/massdns/scripts/ct.py $1 2>/dev/null > $report_path/$1/tmp.txt
-    [ -s $report_path/$1/tmp.txt ] && cat $report_path/$1/tmp.txt | $tools_path/massdns/bin/massdns -r $tools_path/massdns/lists/resolvers.txt -t A -q -o S -w  $report_path/$1/crtsh.txt
-    cat $report_path/$1/subdomains.txt | $tools_path/massdns/bin/massdns -r $tools_path/massdns/lists/resolvers.txt -t A -q -o S -w  $report_path/$1/domaintemp.txt
+    ~/tools/massdns/scripts/ct.py $1 2>/dev/null > $report_path/$1/tmp.txt
+    [ -s $report_path/$1/tmp.txt ] && cat $report_path/$1/tmp.txt | ~/tools/massdns/bin/massdns -r ~/tools/massdns/lists/resolvers.txt -t A -q -o S -w  $report_path/$1/crtsh.txt
+    cat $report_path/$1/subdomains.txt | ~/tools/massdns/bin/massdns -r ~/tools/massdns/lists/resolvers.txt -t A -q -o S -w  $report_path/$1/domaintemp.txt
 }
 
 # # rustscan & nmap
@@ -105,7 +105,7 @@ nmapf() {
 
 # whichCDN
 which_cdn() {
-    if [ "$(python3 $tools_path/whichCDN/whichCDN $1 2>&1 | grep -i 'No CDN found')" = "" ];then
+    if [ "$(python3 ~/tools/whichCDN/whichCDN $1 2>&1 | grep -i 'No CDN found')" = "" ];then
         echo "1"
     else
         echo "0"
@@ -115,7 +115,7 @@ which_cdn() {
 # extract IPs
 ip_extractor() {
     log "IPs ($1)"
-    cd $tools_path/whichCDN
+    cd ~/tools/whichCDN
     touch $report_path/$1/ip.txt
     for subdomain in $(cat $report_path/$1/subdomains.txt);do
         if [ "$(which_cdn $subdomain | grep -i '1')" = "" ];then
@@ -187,7 +187,7 @@ feroxbusterf() {
 # JSFScan.sh
 JSFScan() {
     log "Working on JS ($1)"
-    cd $tools_path/JSFScan.sh/ && $tools_path/JSFScan.sh/JSFScan.sh -l $report_path/$1/urls.txt --all -r -o $report_path/$1/scans/JS/ &>/dev/null
+    cd ~/tools/JSFScan.sh/ && ~/tools/JSFScan.sh/JSFScan.sh -l $report_path/$1/urls.txt --all -r -o $report_path/$1/scans/JS/ &>/dev/null
     cd $absolute_path
 }
 
@@ -200,19 +200,19 @@ vhostdiscovery() {
 # massdns (not required)
 massdns() {
     log "massdns ($1)"
-    $tools_path/massdns/scripts/subbrute.py $seclists_path/Discovery/DNS/clean-jhaddix-dns.txt $1 | $tools_path/massdns/bin/massdns -r $tools_path/massdns/lists/resolvers.txt -t A -q -o S | grep -v 142.54.173.92 > $report_path/$1/mass.txt
+    ~/tools/massdns/scripts/subbrute.py $seclists_path/Discovery/DNS/clean-jhaddix-dns.txt $1 | ~/tools/massdns/bin/massdns -r ~/tools/massdns/lists/resolvers.txt -t A -q -o S | grep -v 142.54.173.92 > $report_path/$1/mass.txt
 }
 
 # Asnlookup (not required)
 asnlookup() {
     log "asnlookup ($1)"
-    python3 $tools_path/Asnlookup/asnlookup.py -n "-A -T4" -o "$report_path/$1/asnlookup.txt"
+    python3 ~/tools/Asnlookup/asnlookup.py -n "-A -T4" -o "$report_path/$1/asnlookup.txt"
 }
 
 # Zone-transfer
 zone_transfer() {
     log "Checking zone transfer ($1)"
-    $tools_path/Zone-transfer/zone-t.sh $1 | tee $report_path/$1/zone_transfer.txt
+    ~/tools/Zone-transfer/zone-t.sh $1 | tee $report_path/$1/zone_transfer.txt
 }
 
 # live hosts
@@ -322,6 +322,7 @@ if [ -s "$target_program_path/scope.txt" ];then
         wayback $scope
         mkdir -p $report_path/$scope/gospider
         gospiderf $scope
+        feroxbusterf $scope
         # Recon 3 (scanning the hosts and subdomains)
         mkdir -p $report_path/$scope/scans/Aquatone
         mkdir -p $report_path/$scope/scans/ports
